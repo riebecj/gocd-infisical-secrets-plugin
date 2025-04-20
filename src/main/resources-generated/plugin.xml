@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright 2025 Casey Riebe
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<go-plugin id="cd.go.plugin.secrets.infisical" version="1">
+  <about>
+    <name>GoCD secrets plugin for Infisical</name>
+    <version>1.0.0-1</version>
+    <target-go-version>25.1.0</target-go-version>
+    <description>GoCD secrets plugin for Infisical</description>
+    <vendor>
+      <name>Casey Riebe</name>
+      <url>https://github.com/riebecj/gocd-infisical-secrets-plugin</url>
+    </vendor>
+
+  </about>
+</go-plugin>

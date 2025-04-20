@@ -1,0 +1,73 @@
+
+apply plugin: 'java'
+apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
+
+
+gocdPlugin {
+  id = 'cd.go.plugin.secrets.infisical'
+  pluginVersion = '1.0.0'
+  goCdVersion = '25.1.0'
+  name = 'GoCD secrets plugin for Infisical'
+  description = 'GoCD secrets plugin for Infisical'
+  vendorName = 'Casey Riebe'
+  vendorUrl = 'https://github.com/riebecj/gocd-infisical-secrets-plugin'
+
+  githubRepo {
+    owner = System.getenv('GITHUB_USER') ?: 'bob'
+    repo = 'gocd-infisical-secrets-plugin'
+    token = System.getenv('GITHUB_TOKEN') ?: 'bad-token'
+  }
+
+  pluginProject = project
+
+  prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
+  assetsToRelease = [project.tasks.findByName('jar')]
+}
+
+version = gocdPlugin.fullVersion(project)
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+ext {
+  deps = [
+    gocdPluginApi: 'cd.go.plugin:go-plugin-api:25.1.0',
+  ]
+
+  versions = project.ext.deps.collectEntries { lib, libGav -> [lib, libGav.split(':').last()] }
+}
+
+dependencies {
+  implementation group: 'cd.go.plugin.base', name: 'gocd-plugin-base', version: '1.0.1'
+  compileOnly project.deps.gocdPluginApi
+  implementation group: 'com.google.code.gson', name: 'gson', version: '2.12.1'
+  implementation group: 'com.infisical', name: 'sdk', version: '3.0.2'
+
+
+  testImplementation project.deps.gocdPluginApi
+  testImplementation platform('org.junit:junit-bom:5.12.1')
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.27.3'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.16.1'
+  testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '2.0-rc1'
+  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
+  testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher'
+}
+
+test {
+  useJUnitPlatform()
+}
+
+jar {
+  from(configurations.runtimeClasspath) {
+    into "lib/"
+  }
+}
