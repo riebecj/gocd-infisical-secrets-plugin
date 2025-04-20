@@ -2,7 +2,6 @@
 apply plugin: 'java'
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/master/helper.gradle?_=${(int) (new Date().toInstant().epochSecond / 60)}"
 
-
 gocdPlugin {
   id = 'cd.go.plugin.secrets.infisical'
   pluginVersion = '1.0.0'
@@ -13,18 +12,19 @@ gocdPlugin {
   vendorUrl = 'https://github.com/riebecj/gocd-infisical-secrets-plugin'
 
   githubRepo {
-    owner = System.getenv('GITHUB_USER') ?: 'bob'
+    owner = System.getenv('GITHUB_USER') ?: 'riebecj'
     repo = 'gocd-infisical-secrets-plugin'
     token = System.getenv('GITHUB_TOKEN') ?: 'bad-token'
   }
 
   pluginProject = project
-
   prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
   assetsToRelease = [project.tasks.findByName('jar')]
 }
 
-version = gocdPlugin.fullVersion(project)
+allprojects {
+  version = gocdPlugin.fullVersion(project)
+}
 
 java {
   sourceCompatibility = JavaVersion.VERSION_11
@@ -36,22 +36,14 @@ repositories {
   mavenLocal()
 }
 
-ext {
-  deps = [
-    gocdPluginApi: 'cd.go.plugin:go-plugin-api:25.1.0',
-  ]
-
-  versions = project.ext.deps.collectEntries { lib, libGav -> [lib, libGav.split(':').last()] }
-}
-
 dependencies {
   implementation group: 'cd.go.plugin.base', name: 'gocd-plugin-base', version: '1.0.1'
-  compileOnly project.deps.gocdPluginApi
+  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '25.1.0'
   implementation group: 'com.google.code.gson', name: 'gson', version: '2.12.1'
   implementation group: 'com.infisical', name: 'sdk', version: '3.0.2'
 
 
-  testImplementation project.deps.gocdPluginApi
+  testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: '25.1.0'
   testImplementation platform('org.junit:junit-bom:5.12.1')
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
