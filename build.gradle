@@ -4,7 +4,7 @@ apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-help
 
 gocdPlugin {
   id = 'cd.go.plugin.secrets.infisical'
-  pluginVersion = '1.0.0'
+  pluginVersion = '1.0.1'
   goCdVersion = '25.1.0'
   name = 'GoCD secrets plugin for Infisical'
   description = 'GoCD secrets plugin for Infisical'
