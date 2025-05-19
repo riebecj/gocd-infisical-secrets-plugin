@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  implementation group: 'cd.go.plugin.base', name: 'gocd-plugin-base', version: '1.0.1'
+  implementation group: 'cd.go.plugin.base', name: 'gocd-plugin-base', version: '1.0.2'
   compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '25.1.0'
   implementation group: 'com.google.code.gson', name: 'gson', version: '2.13.1'
   implementation group: 'com.infisical', name: 'sdk', version: '3.0.2'
